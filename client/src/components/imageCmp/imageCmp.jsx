@@ -1,14 +1,24 @@
 import { Image } from "@imagekit/react";
 
-const ImageCmp = ({ item, showPlaceholder, placeholderURL, imgRef }) => {
+const ImageCmp = ({
+  showPlaceholder,
+  placeholderURL,
+  className,
+  imgRef,
+  path,
+  alt,
+  w,
+  h,
+}) => {
   return (
     <Image
       urlEndpoint={import.meta.env.VITE_URL_IMAGEKIT_ENDPOINT}
-      src={item.media}
-      alt="Pictures"
+      src={path}
+      alt={alt}
       ref={imgRef}
       loading="eager"
-      transformation={[{ width: 372 }]}
+      transformation={[{ width: w, height: h }]}
+      className={className}
       style={{
         width: "100%",
         borderRadius: "16px",

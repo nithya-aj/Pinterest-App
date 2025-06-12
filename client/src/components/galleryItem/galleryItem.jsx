@@ -4,11 +4,13 @@ import { RiShare2Line } from "react-icons/ri";
 import IconButton from "@mui/material/IconButton";
 import Box from "@mui/material/Box";
 import { BsThreeDots } from "react-icons/bs";
-import { buildSrc, Image } from "@imagekit/react";
+import { buildSrc } from "@imagekit/react";
 import { useCallback, useState } from "react";
 import ImageCmp from "../imageCmp/imageCmp";
 
 const GalleryItem = ({ item }) => {
+  const optimizedHeight = (372 * item.height) / item.width;
+
   const [showPlaceholder, setShowPlaceholder] = useState(true);
 
   const hidePlaceholder = () => setShowPlaceholder(false);
@@ -81,7 +83,10 @@ const GalleryItem = ({ item }) => {
       /> */}
 
       <ImageCmp
-        item={item}
+        path={item.media}
+        alt="pictures"
+        w={372}
+        h={optimizedHeight}
         showPlaceholder={showPlaceholder}
         placeholderURL={placeholderURL}
         imgRef={imgRef}
