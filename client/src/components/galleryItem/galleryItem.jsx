@@ -1,12 +1,38 @@
-import "./galleryItem.css";
 import { Link } from "react-router";
 import Button from "@mui/material/Button";
 import { RiShare2Line } from "react-icons/ri";
 import IconButton from "@mui/material/IconButton";
 import Box from "@mui/material/Box";
 import { BsThreeDots } from "react-icons/bs";
+import { buildSrc, Image } from "@imagekit/react";
+import { useCallback, useState } from "react";
+import ImageCmp from "../imageCmp/imageCmp";
 
 const GalleryItem = ({ item }) => {
+  const [showPlaceholder, setShowPlaceholder] = useState(true);
+
+  const hidePlaceholder = () => setShowPlaceholder(false);
+
+  const imgRef = useCallback((img) => {
+    if (!img) return;
+
+    if (img.complete) {
+      hidePlaceholder();
+      return;
+    }
+  }, []);
+
+  const placeholderURL = buildSrc({
+    urlEndpoint: import.meta.env.VITE_URL_IMAGEKIT_ENDPOINT,
+    src: item.media,
+    transformation: [
+      {
+        quality: 20,
+        blur: 90,
+      },
+    ],
+  });
+
   return (
     <Box
       className="galleryItem"
@@ -42,7 +68,7 @@ const GalleryItem = ({ item }) => {
         },
       }}
     >
-      <Box
+      {/* <Box
         component="img"
         src={item.media}
         alt=""
@@ -52,6 +78,13 @@ const GalleryItem = ({ item }) => {
           borderRadius: "16px",
           objectFit: "cover",
         }}
+      /> */}
+
+      <ImageCmp
+        item={item}
+        showPlaceholder={showPlaceholder}
+        placeholderURL={placeholderURL}
+        imgRef={imgRef}
       />
 
       <Link
