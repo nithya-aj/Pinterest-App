@@ -20,13 +20,7 @@ const ImageCmp = ({
       transformation={[{ width: w, height: h }]}
       className={className}
       style={{
-        width: "100%",
-        borderRadius: "16px",
-        objectFit: "cover",
         backgroundImage: showPlaceholder ? `url(${placeholderURL})` : "none",
-        backgroundSize: "cover",
-        backgroundRepeat: "no-repeat",
-        backgroundPosition: "center",
       }}
     />
   );

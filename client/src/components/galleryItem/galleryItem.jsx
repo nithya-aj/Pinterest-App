@@ -1,3 +1,4 @@
+import "./galleryItem.css";
 import { Link } from "react-router";
 import Button from "@mui/material/Button";
 import { RiShare2Line } from "react-icons/ri";
@@ -70,18 +71,6 @@ const GalleryItem = ({ item }) => {
         },
       }}
     >
-      {/* <Box
-        component="img"
-        src={item.media}
-        alt=""
-        loading="lazy"
-        sx={{
-          width: "100%",
-          borderRadius: "16px",
-          objectFit: "cover",
-        }}
-      /> */}
-
       <ImageCmp
         path={item.media}
         alt="pictures"
