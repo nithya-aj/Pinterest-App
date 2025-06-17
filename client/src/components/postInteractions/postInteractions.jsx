@@ -9,11 +9,11 @@ const PostInteractions = () => {
   return (
     <div className="postInteractions">
       <div className="interactionIcons">
-        <IconButton aria-label="settings" size="medium" color="inherit">
+        <IconButton aria-label="like" size="medium" color="inherit">
           <IoIosHeartEmpty />
         </IconButton>
         273
-        <IconButton aria-label="settings" size="medium" color="inherit">
+        <IconButton aria-label="share" size="medium" color="inherit">
           <RiShare2Line />
         </IconButton>
         <IconButton aria-label="settings" size="medium" color="inherit">

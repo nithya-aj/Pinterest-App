@@ -1,3 +1,52 @@
-.profilePage{
-    
+.profilePage {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 16px;
+}
+
+.profileName {
+  font-size: 36px;
+  font-weight: 500;
+}
+
+.profileUserName {
+  font-weight: 300;
+  color: gray;
+}
+
+.followCounts {
+  font-weight: 500;
+}
+
+.profileInteractions {
+  display: flex;
+  align-items: center;
+  gap: 32px;
+}
+
+.profileButtons {
+  display: flex;
+  gap: 16px;
+}
+
+.profileOptions {
+  display: flex;
+  gap: 16px;
+  margin-top: 22px;
+  margin-bottom: 16px;
+  font-weight: 500;
+}
+
+.profileOptions span {
+  cursor: pointer;
+  padding: 8px 0px;
+}
+
+.profileOptions span:hover {
+  color: gray;
+}
+
+.active {
+  border-bottom: 3px solid black;
 }
