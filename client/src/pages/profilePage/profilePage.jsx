@@ -5,6 +5,7 @@ import { RiShare2Line } from "react-icons/ri";
 import Button from "@mui/material/Button";
 import { BsThreeDots } from "react-icons/bs";
 import { useState } from "react";
+import Collections from "../../components/collections/collections";
 
 const Profilepage = () => {
   const [type, setType] = useState("saved");
@@ -58,6 +59,7 @@ const Profilepage = () => {
           Saved
         </span>
       </div>
+      {type === "created" ? <Gallery /> : <Collections />}
     </div>
   );
 };
