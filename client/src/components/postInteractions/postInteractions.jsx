@@ -20,7 +20,11 @@ const PostInteractions = () => {
           <BsThreeDots />
         </IconButton>
       </div>
-      <Button variant="contained" color="error" sx={{ borderRadius: "24px" }}>
+      <Button
+        variant="contained"
+        color="error"
+        sx={{ borderRadius: "24px", fontFamily: "Rubik" }}
+      >
         Save
       </Button>
     </div>

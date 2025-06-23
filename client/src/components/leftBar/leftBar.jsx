@@ -13,6 +13,7 @@ import {
 } from "react-icons/fa6";
 import { RiSettingsFill, RiSettingsLine } from "react-icons/ri";
 import IconButton from "@mui/material/IconButton";
+import { Link } from "react-router";
 
 const LeftBar = () => {
   return (
@@ -21,21 +22,51 @@ const LeftBar = () => {
         <a href="/" className="menuIcon">
           <img src="/general/logo.png" alt="logo" className="logo" />
         </a>
-        <IconButton aria-label="home" size="medium" color="inherit">
+        <IconButton
+          to="/"
+          LinkComponent={Link}
+          aria-label="home"
+          size="medium"
+          color="inherit"
+        >
           <AiOutlineHome />
         </IconButton>
-        <IconButton aria-label="create" size="medium" color="inherit">
+        <IconButton
+          to="/create"
+          LinkComponent={Link}
+          aria-label="create"
+          size="medium"
+          color="inherit"
+        >
           {" "}
           <FaRegSquarePlus />
         </IconButton>
-        <IconButton aria-label="nots" size="medium" color="inherit">
+        <IconButton
+          to="/"
+          LinkComponent={Link}
+          aria-label="nots"
+          size="medium"
+          color="inherit"
+        >
           <FaRegBell />
         </IconButton>
-        <IconButton aria-label="message" size="medium" color="inherit">
+        <IconButton
+          to="/"
+          LinkComponent={Link}
+          aria-label="message"
+          size="medium"
+          color="inherit"
+        >
           <AiOutlineMessage />
         </IconButton>
       </div>
-      <IconButton aria-label="settings" size="medium" color="inherit">
+      <IconButton
+        to="/"
+        LinkComponent={Link}
+        aria-label="settings"
+        size="medium"
+        color="inherit"
+      >
         <RiSettingsLine />
       </IconButton>
     </div>

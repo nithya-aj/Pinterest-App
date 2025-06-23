@@ -94,6 +94,7 @@ const GalleryItem = ({ item }) => {
         color="error"
         sx={{
           display: "none",
+          fontFamily: "Rubik",
         }}
       >
         Save

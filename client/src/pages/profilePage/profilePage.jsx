@@ -6,6 +6,7 @@ import Button from "@mui/material/Button";
 import { BsThreeDots } from "react-icons/bs";
 import { useState } from "react";
 import Collections from "../../components/collections/collections";
+import Gallery from "../../components/gallery/gallery";
 
 const Profilepage = () => {
   const [type, setType] = useState("saved");
@@ -29,14 +30,22 @@ const Profilepage = () => {
           <Button
             variant="contained"
             color="inherit"
-            sx={{ borderRadius: "24px", textTransform: "none" }}
+            sx={{
+              borderRadius: "24px",
+              textTransform: "none",
+              fontFamily: "Rubik",
+            }}
           >
             Message
           </Button>
           <Button
             variant="contained"
             color="error"
-            sx={{ borderRadius: "24px", textTransform: "none" }}
+            sx={{
+              borderRadius: "24px",
+              textTransform: "none",
+              fontFamily: "Rubik",
+            }}
           >
             Follow
           </Button>
