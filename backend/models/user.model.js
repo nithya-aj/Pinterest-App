@@ -17,7 +17,7 @@ const userSchema = new Schema({
     img: {
         type: String,
     },
-    hashedPasswords: {
+    hashedPassword: {
         type: String,
         required: true
     }
