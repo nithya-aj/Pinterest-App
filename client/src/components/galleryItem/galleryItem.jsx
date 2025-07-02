@@ -82,7 +82,7 @@ const GalleryItem = ({ item }) => {
       />
 
       <Link
-        to={`/pin/${item.id}`}
+        to={`/pin/${item._id}`}
         className="overlay"
         sx={{
           display: "none",

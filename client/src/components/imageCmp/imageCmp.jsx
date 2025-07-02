@@ -13,6 +13,7 @@ const ImageCmp = ({
   return (
     <Image
       urlEndpoint={import.meta.env.VITE_URL_IMAGEKIT_ENDPOINT}
+      // path={path}
       src={path}
       alt={alt}
       ref={imgRef}
