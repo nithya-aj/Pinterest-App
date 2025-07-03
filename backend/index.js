@@ -14,7 +14,7 @@ app.use(cors({ origin: process.env.CLIENT_URL }))
 
 app.use("/users", userRouter)
 app.use("/pins", pinRouter)
-app.use("/comment", commentRouter)
+app.use("/comments", commentRouter)
 app.use("/boards", boardRouter)
 
 app.listen(3000, () => {

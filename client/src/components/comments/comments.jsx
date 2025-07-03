@@ -2,104 +2,43 @@ import "./comments.css";
 import Avatar from "@mui/material/Avatar";
 import IconButton from "@mui/material/IconButton";
 import Input from "@mui/material/Input";
+import { useQuery } from "@tanstack/react-query";
 import EmojiPicker from "emoji-picker-react";
 import { useState } from "react";
+import apiRequest from "../../utils/apiRequest";
+import { format } from "timeago.js";
 
-const Comments = () => {
+const Comments = ({ id }) => {
   const [open, setOpen] = useState(false);
+
+  const { isPending, error, data } = useQuery({
+    queryKey: ["comments", id],
+    queryFn: () => apiRequest.get(`/comments/${id}`).then((res) => res.data),
+  });
+
+  if (isPending) return "Loading...";
+  if (error) return "An error has occurred:" + error.message;
+  if (!data) return "Pin not found!";
+
   return (
     <div className="comments">
       <div className="commentList">
-        <span className="commentCount">5 comment</span>
+        <span className="commentCount">
+          {data.length === 0 ? "No comments" : data.length + " comments"}
+        </span>
         {/* Comment */}
-        <div className="comment">
-          <Avatar></Avatar>
-          <div className="commentContent">
-            <span className="commentUserName">John Doe</span>
-            <p className="commentText">
-              Lorem ipsum, dolor sit amet consectetur adipisicing elit.
-              Accusamus, explicabo!
-            </p>
-            <span className="commentTime">1 hr</span>
+        {data.map((comment) => (
+          <div className="comment" key={data._id}>
+            <Avatar src={comment.user.img || ""}></Avatar>
+            <div className="commentContent">
+              <span className="commentUserName">
+                {comment.user.displayName}
+              </span>
+              <p className="commentText">{comment.description}</p>
+              <span className="commentTime">{format(comment.createdAt)}</span>
+            </div>
           </div>
-        </div>
-        <div className="comment">
-          <Avatar></Avatar>
-          <div className="commentContent">
-            <span className="commentUserName">John Doe</span>
-            <p className="commentText">
-              Lorem ipsum, dolor sit amet consectetur adipisicing elit.
-              Accusamus, explicabo!
-            </p>
-            <span className="commentTime">1 hr</span>
-          </div>
-        </div>
-        <div className="comment">
-          <Avatar></Avatar>
-          <div className="commentContent">
-            <span className="commentUserName">John Doe</span>
-            <p className="commentText">
-              Lorem ipsum, dolor sit amet consectetur adipisicing elit.
-              Accusamus, explicabo!
-            </p>
-            <span className="commentTime">1 hr</span>
-          </div>
-        </div>
-        <div className="comment">
-          <Avatar></Avatar>
-          <div className="commentContent">
-            <span className="commentUserName">John Doe</span>
-            <p className="commentText">
-              Lorem ipsum, dolor sit amet consectetur adipisicing elit.
-              Accusamus, explicabo!
-            </p>
-            <span className="commentTime">1 hr</span>
-          </div>
-        </div>
-        <div className="comment">
-          <Avatar></Avatar>
-          <div className="commentContent">
-            <span className="commentUserName">John Doe</span>
-            <p className="commentText">
-              Lorem ipsum, dolor sit amet consectetur adipisicing elit.
-              Accusamus, explicabo!
-            </p>
-            <span className="commentTime">1 hr</span>
-          </div>
-        </div>
-        <div className="comment">
-          <Avatar></Avatar>
-          <div className="commentContent">
-            <span className="commentUserName">John Doe</span>
-            <p className="commentText">
-              Lorem ipsum, dolor sit amet consectetur adipisicing elit.
-              Accusamus, explicabo!
-            </p>
-            <span className="commentTime">1 hr</span>
-          </div>
-        </div>
-        <div className="comment">
-          <Avatar></Avatar>
-          <div className="commentContent">
-            <span className="commentUserName">John Doe</span>
-            <p className="commentText">
-              Lorem ipsum, dolor sit amet consectetur adipisicing elit.
-              Accusamus, explicabo!
-            </p>
-            <span className="commentTime">1 hr</span>
-          </div>
-        </div>
-        <div className="comment">
-          <Avatar></Avatar>
-          <div className="commentContent">
-            <span className="commentUserName">John Doe</span>
-            <p className="commentText">
-              Lorem ipsum, dolor sit amet consectetur adipisicing elit.
-              Accusamus, explicabo!
-            </p>
-            <span className="commentTime">1 hr</span>
-          </div>
-        </div>
+        ))}
       </div>
       <form className="commentForm">
         <Input
