@@ -5,16 +5,29 @@ import { RiShare2Line } from "react-icons/ri";
 import Button from "@mui/material/Button";
 import { BsThreeDots } from "react-icons/bs";
 import { useState } from "react";
-import Collections from "../../components/collections/collections";
 import Gallery from "../../components/gallery/gallery";
+import { useParams } from "react-router";
+import { useQuery } from "@tanstack/react-query";
+import apiRequest from "../../utils/apiRequest";
+import Boards from "../../components/boards/boards";
 
 const Profilepage = () => {
   const [type, setType] = useState("saved");
+  const { userName } = useParams();
+  const { isPending, error, data } = useQuery({
+    queryKey: ["profile", userName],
+    queryFn: () => apiRequest.get(`/users/${userName}`).then((res) => res.data),
+  });
+
+  if (isPending) return "Loading...";
+  if (error) return "An error has occurred:" + error.message;
+  if (!data) return "User not found!";
+
   return (
     <div className="profilePage">
-      <Avatar sx={{ height: 100, width: 100 }} />
-      <h1 className="profileName">John Doe</h1>
-      <span className="profileUserName">@johndoe</span>
+      <Avatar src={data.img || ""} sx={{ height: 100, width: 100 }} />
+      <h1 className="profileName">{data.displayName}</h1>
+      <span className="profileUserName">@{data.userName}</span>
       <div className="followCounts">10 followers . 20 followings </div>
       <div className="profileInteractions">
         <IconButton
@@ -68,7 +81,11 @@ const Profilepage = () => {
           Saved
         </span>
       </div>
-      {type === "created" ? <Gallery /> : <Collections />}
+      {type === "created" ? (
+        <Gallery userId={data._id} />
+      ) : (
+        <Boards userId={data._id} />
+      )}
     </div>
   );
 };

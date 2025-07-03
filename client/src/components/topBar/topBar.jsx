@@ -3,12 +3,21 @@ import { IoSearch } from "react-icons/io5";
 import Box from "@mui/material/Box";
 import Input from "@mui/material/Input";
 import "./topBar.css";
+import { useNavigate } from "react-router";
 
 const TopBar = () => {
+  const navigate = useNavigate();
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    navigate(`/search?search=${e.target[0].value}`);
+  };
+
   return (
     <div className="topBar">
-      {/* Search */}
       <Box
+        component={"form"}
+        onSubmit={handleSubmit}
         sx={{
           flex: 1,
           bgcolor: "#f1f1f1",
