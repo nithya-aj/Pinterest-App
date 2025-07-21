@@ -1,10 +1,27 @@
 import { useState } from "react";
 import "./authPage.css";
 import Button from "@mui/material/Button";
+import apiRequest from "../../utils/apiRequest";
 
 const Authpage = () => {
   const [isRegister, setIsRegister] = useState(false);
   const [error, setError] = useState("");
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    const formData = new FormData(e.target);
+    const data = Object.fromEntries(formData);
+    try {
+      const res = await apiRequest.post(
+        `/users/auth/${isRegister ? "register" : "login"}`,
+        data
+      );
+      console.log(res.data);
+    } catch (err) {
+      setError(err.response.data.message);
+    }
+  };
+
   return (
     <div className="authPage">
       <div
@@ -15,21 +32,21 @@ const Authpage = () => {
         <img src="../general/logo.png" alt="" />
         <h1> {isRegister ? "Create an Account" : "Login to your account"}</h1>
         {isRegister ? (
-          <form action="" key="registerForm">
+          <form key="registerForm" onSubmit={handleSubmit}>
             <div className="formGroup">
-              <label htmlFor="username">Username</label>
+              <label htmlFor="userName">Username</label>
               <input
-                type="username"
+                type="text"
                 placeholder="Username"
                 required
-                name="username"
-                id="username"
+                name="userName"
+                id="userName"
               />
             </div>
             <div className="formGroup">
               <label htmlFor="displayName">Name</label>
               <input
-                type="displayName"
+                type="text"
                 placeholder="Name"
                 required
                 name="displayName"
@@ -57,6 +74,7 @@ const Authpage = () => {
               />
             </div>
             <Button
+              type="submit"
               variant="contained"
               color="error"
               sx={{
@@ -67,7 +85,6 @@ const Authpage = () => {
             >
               Register
             </Button>
-            {/* <button type="submit">Register</button> */}
             <p>
               Do you have an account?{" "}
               <b onClick={() => setIsRegister(false)}>Login</b>
@@ -75,7 +92,7 @@ const Authpage = () => {
             {error && <p className="error">{error}</p>}
           </form>
         ) : (
-          <form action="" key="loginForm">
+          <form action="" key="loginForm" onSubmit={handleSubmit}>
             <div className="formGroup">
               <label htmlFor="email">Email</label>
               <input
@@ -97,6 +114,7 @@ const Authpage = () => {
               />
             </div>
             <Button
+              type="submit"
               variant="contained"
               color="error"
               sx={{
@@ -107,7 +125,6 @@ const Authpage = () => {
             >
               Login
             </Button>
-            {/* <button type="submit">Login</button> */}
             <p>
               Don&apos;t have an account?{" "}
               <b onClick={() => setIsRegister(true)}>Register</b>

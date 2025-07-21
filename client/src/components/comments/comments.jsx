@@ -1,16 +1,11 @@
 import "./comments.css";
 import Avatar from "@mui/material/Avatar";
-import IconButton from "@mui/material/IconButton";
-import Input from "@mui/material/Input";
 import { useQuery } from "@tanstack/react-query";
-import EmojiPicker from "emoji-picker-react";
-import { useState } from "react";
 import apiRequest from "../../utils/apiRequest";
 import { format } from "timeago.js";
+import CommentForm from "./commentForm";
 
 const Comments = ({ id }) => {
-  const [open, setOpen] = useState(false);
-
   const { isPending, error, data } = useQuery({
     queryKey: ["comments", id],
     queryFn: () => apiRequest.get(`/comments/${id}`).then((res) => res.data),
@@ -40,28 +35,7 @@ const Comments = ({ id }) => {
           </div>
         ))}
       </div>
-      <form className="commentForm">
-        <Input
-          sx={{ all: "unset", width: "100%", pl: "16px", fontSize: "15px" }}
-          type="text"
-          placeholder="Search"
-        />
-        <div className="emoji">
-          {/* <div>&#128522;</div> */}
-          <IconButton
-            color="inherit"
-            size="small"
-            onClick={() => setOpen((prev) => !prev)}
-          >
-            &#128522;
-          </IconButton>
-          {open && (
-            <div className="emojiPicker">
-              <EmojiPicker />
-            </div>
-          )}
-        </div>
-      </form>
+      <CommentForm />
     </div>
   );
 };
