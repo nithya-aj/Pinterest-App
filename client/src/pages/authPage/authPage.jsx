@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { useNavigate } from "react-router";
 import "./authPage.css";
 import Button from "@mui/material/Button";
 import apiRequest from "../../utils/apiRequest";
@@ -7,16 +8,18 @@ const Authpage = () => {
   const [isRegister, setIsRegister] = useState(false);
   const [error, setError] = useState("");
 
+  const navigate = useNavigate();
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     const formData = new FormData(e.target);
     const data = Object.fromEntries(formData);
     try {
-      const res = await apiRequest.post(
+      await apiRequest.post(
         `/users/auth/${isRegister ? "register" : "login"}`,
         data
       );
-      console.log(res.data);
+      navigate("/");
     } catch (err) {
       setError(err.response.data.message);
     }
