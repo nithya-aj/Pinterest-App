@@ -3,6 +3,7 @@ import { useNavigate } from "react-router";
 import "./authPage.css";
 import Button from "@mui/material/Button";
 import apiRequest from "../../utils/apiRequest";
+import useAuthStore from "../../utils/authStore";
 
 const Authpage = () => {
   const [isRegister, setIsRegister] = useState(false);
@@ -10,15 +11,18 @@ const Authpage = () => {
 
   const navigate = useNavigate();
 
+  const { setCurrentUser } = useAuthStore();
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     const formData = new FormData(e.target);
     const data = Object.fromEntries(formData);
     try {
-      await apiRequest.post(
+      const res = await apiRequest.post(
         `/users/auth/${isRegister ? "register" : "login"}`,
         data
       );
+      setCurrentUser(res.data);
       navigate("/");
     } catch (err) {
       setError(err.response.data.message);

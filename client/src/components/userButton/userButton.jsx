@@ -6,10 +6,26 @@ import Box from "@mui/material/Box";
 import Menu from "@mui/material/Menu";
 import MenuItem from "@mui/material/MenuItem";
 import { useState } from "react";
+import apiRequest from "../../utils/apiRequest";
+import { Link, useNavigate } from "react-router";
+import useAuthStore from "../../utils/authStore";
 
 const UserButton = () => {
-  // temp user
-  const currentUser = true;
+  const navigate = useNavigate();
+
+  const { currentUser, removeCurrentUser } = useAuthStore();
+
+  const handleLogout = async () => {
+    try {
+      await apiRequest.post("/users/auth/logout", {});
+      removeCurrentUser();
+      navigate("/auth");
+      setAnchorEl(null);
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
   const [anchorEl, setAnchorEl] = useState(null);
   const open = Boolean(anchorEl);
   const handleClick = (event) => {
@@ -21,7 +37,7 @@ const UserButton = () => {
 
   return currentUser ? (
     <Box sx={{ display: "flex", alignItems: "center", position: "relative" }}>
-      <Avatar alt="Travis Howard" src="/static/images/avatar/2.jpg" />
+      <Avatar alt="Travis Howard" src={currentUser.img} />
       <IconButton
         aria-label="home"
         size="medium"
@@ -45,15 +61,21 @@ const UserButton = () => {
           },
         }}
       >
-        <MenuItem onClick={handleClose}>Profile</MenuItem>
+        <MenuItem
+          component={Link}
+          to={`/profile/${currentUser.userName}`}
+          onClick={handleClose}
+        >
+          Profile
+        </MenuItem>
         <MenuItem onClick={handleClose}>Settings</MenuItem>
-        <MenuItem onClick={handleClose}>Logout</MenuItem>
+        <MenuItem onClick={handleLogout}>Logout</MenuItem>
       </Menu>
     </Box>
   ) : (
-    <a href="/" className="loginLink">
+    <Link to="/auth" className="loginLink">
       Login/Signup
-    </a>
+    </Link>
   );
 };
 
