@@ -104,12 +104,16 @@ export const getUser = async (req, res) => {
 }
 
 export const followUser = async (req, res) => {
+
     const { userName } = req.params
+
     const user = await User.findOne({ userName })
+
     const isFollowing = await Follow.exists({
         follower: req.userId,
         following: user._id
     })
+
     if (isFollowing) {
         await Follow.deleteOne({ follower: req.userId, following: user._id })
     } else {
