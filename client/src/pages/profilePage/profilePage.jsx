@@ -10,6 +10,7 @@ import { useParams } from "react-router";
 import { useQuery } from "@tanstack/react-query";
 import apiRequest from "../../utils/apiRequest";
 import Boards from "../../components/boards/boards";
+import FollowButton from "./FollowButton";
 
 const Profilepage = () => {
   const [type, setType] = useState("saved");
@@ -28,7 +29,9 @@ const Profilepage = () => {
       <Avatar src={data.img || ""} sx={{ height: 100, width: 100 }} />
       <h1 className="profileName">{data.displayName}</h1>
       <span className="profileUserName">@{data.userName}</span>
-      <div className="followCounts">10 followers . 20 followings </div>
+      <div className="followCounts">
+        {data.followerCount} followers . {data.followingCount} followings{" "}
+      </div>
       <div className="profileInteractions">
         <IconButton
           aria-label="share"
@@ -51,17 +54,10 @@ const Profilepage = () => {
           >
             Message
           </Button>
-          <Button
-            variant="contained"
-            color="error"
-            sx={{
-              borderRadius: "24px",
-              textTransform: "none",
-              fontFamily: "Rubik",
-            }}
-          >
-            Follow
-          </Button>
+          <FollowButton
+            isFollowing={data.isFollowing}
+            userName={data.userName}
+          />
         </div>
         <IconButton aria-label="settings" size="medium" color="inherit">
           <BsThreeDots />
