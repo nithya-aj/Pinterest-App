@@ -1,7 +1,6 @@
 import { useState } from "react";
 import useEditorStore from "../../utils/editorStore";
 import { HexColorPicker } from "react-colorful";
-import { backdropClasses } from "@mui/material/Backdrop";
 
 const portraitSizes = [
   {
