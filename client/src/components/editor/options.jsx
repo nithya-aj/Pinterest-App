@@ -78,7 +78,19 @@ const Options = ({ previewImg }) => {
     setCanvasOptions,
   } = useEditorStore();
   const [isColorPickerOpen, setIsColorPickerOpen] = useState(false);
-  const handleOrientationClick = (orientation) => {};
+  const handleOrientationClick = (orientation) => {
+    const newHeight =
+      orientation === "portrait"
+        ? (375 * previewImg.width) / previewImg.height
+        : (375 * previewImg.height) / previewImg.width;
+
+    setCanvasOptions({
+      ...canvasOptions,
+      orientation,
+      size: "original",
+      height: newHeight,
+    });
+  };
   const handleSizeClick = (size) => {
     let newHeight;
     if (size === "original") {
