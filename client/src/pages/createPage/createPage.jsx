@@ -4,10 +4,13 @@ import { BsArrowUpCircleFill } from "react-icons/bs";
 import { MdEdit } from "react-icons/md";
 import useAuthStore from "../../utils/authStore";
 import { useNavigate } from "react-router";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import Editor from "../../components/editor/editor";
+import useEditorStore from "../../utils/editorStore";
+import apiRequest from "../../utils/apiRequest";
 
 const Createpage = () => {
+  const formRef = useRef();
   const [file, setFile] = useState(null);
   const [previewImg, setPreviewImg] = useState({
     url: "",
@@ -17,6 +20,7 @@ const Createpage = () => {
   const [isEditing, setIsEditing] = useState(false);
   const { currentUser } = useAuthStore();
   const navigate = useNavigate();
+  const { textOptions, canvasOptions } = useEditorStore();
 
   useEffect(() => {
     if (!currentUser) {
@@ -38,6 +42,28 @@ const Createpage = () => {
     }
   }, [file]);
 
+  const handleSubmit = async () => {
+    if (isEditing) {
+      setIsEditing(false);
+    } else {
+      const formData = new FormData(formRef.current);
+      formData.append("media", file);
+      formData.append("textOptions", JSON.stringify(textOptions));
+      formData.append("canvasOptions", JSON.stringify(canvasOptions));
+
+      try {
+        const res = await apiRequest.post("/pins", formData, {
+          headers: {
+            "Content-Type": "multipart/form-data",
+          },
+        });
+        console.log(res);
+      } catch (err) {
+        console.log(err);
+      }
+    }
+  };
+
   return (
     <div className="createPage">
       <div className="createTop">
@@ -50,6 +76,7 @@ const Createpage = () => {
             textTransform: "none",
             fontFamily: "Rubik",
           }}
+          onClick={handleSubmit}
         >
           {isEditing ? "Done" : "Publish"}
         </Button>
@@ -83,7 +110,7 @@ const Createpage = () => {
             hidden
             onChange={(e) => setFile(e.target.files[0])}
           />
-          <form className="createForm" action="">
+          <form className="createForm" ref={formRef}>
             <div className="createFormItem">
               <label htmlFor="title">Title</label>
               <input
