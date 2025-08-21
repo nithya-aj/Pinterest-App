@@ -76,13 +76,23 @@ const Options = ({ previewImg }) => {
     canvasOptions,
     setCanvasOptions,
   } = useEditorStore();
-  const [isColorPickerOpen, setIsColorPickerOpen] = useState(false);
-  const handleOrientationClick = (orientation) => {
-    const newHeight =
-      orientation === "portrait"
-        ? (375 * previewImg.width) / previewImg.height
-        : (375 * previewImg.height) / previewImg.width;
 
+  const [isColorPickerOpen, setIsColorPickerOpen] = useState(false);
+
+  const originalOrientation =
+    previewImg.width < previewImg.height ? "portrait" : "landscape";
+
+  const handleOrientationClick = (orientation) => {
+    let newHeight;
+
+    if (
+      (originalOrientation === "portrait" && orientation === "portrait") ||
+      (originalOrientation === "landscape" && orientation === "landscape")
+    ) {
+      newHeight = (375 * previewImg.height) / previewImg.width;
+    } else {
+      newHeight = (375 * previewImg.width) / previewImg.height;
+    }
     setCanvasOptions({
       ...canvasOptions,
       orientation,
@@ -90,13 +100,19 @@ const Options = ({ previewImg }) => {
       height: newHeight,
     });
   };
+
   const handleSizeClick = (size) => {
     let newHeight;
     if (size === "original") {
-      if (canvasOptions.orientation === "portrait") {
-        newHeight = (375 * previewImg.width) / previewImg.height;
-      } else {
+      if (
+        (originalOrientation === "portrait" &&
+          canvasOptions.orientation === "portrait") ||
+        (originalOrientation === "landscape" &&
+          canvasOptions.orientation === "landscape")
+      ) {
         newHeight = (375 * previewImg.height) / previewImg.width;
+      } else {
+        newHeight = (375 * previewImg.width) / previewImg.height;
       }
     } else {
       newHeight = (375 * size.height) / size.width;

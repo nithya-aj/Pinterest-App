@@ -12,8 +12,8 @@ const Boards = ({ userId }) => {
   });
 
   if (isPending) return "Loading...";
-  if (error) return "An error has occurred:" + error.message;
-  if (!data) return "Pin not found!";
+  if (error) return "An error has occurred: " + error.message;
+  if (!data) return "Pin not found!"; 
 
   return (
     <div className="collections">

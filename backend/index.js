@@ -1,5 +1,6 @@
 import express from 'express'
 import cors from 'cors'
+import dotenv from 'dotenv'
 import userRouter from './routes/user.route.js'
 import pinRouter from './routes/pin.route.js'
 import commentRouter from './routes/comment.route.js'
@@ -9,6 +10,7 @@ import cookieParser from 'cookie-parser'
 import fileUpload from 'express-fileupload'
 
 const app = express()
+dotenv.config()
 
 app.use(express.json())
 

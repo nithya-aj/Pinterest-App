@@ -8,19 +8,28 @@ import { useEffect, useRef, useState } from "react";
 import Editor from "../../components/editor/editor";
 import useEditorStore from "../../utils/editorStore";
 import apiRequest from "../../utils/apiRequest";
+import { useMutation, useQuery } from "@tanstack/react-query";
+import BoardForm from "./BoardForm";
+
+const addPost = async (post) => {
+  const res = await apiRequest.post("/pins", post);
+  return res.data;
+};
 
 const Createpage = () => {
+  const { currentUser } = useAuthStore();
   const formRef = useRef();
+  const navigate = useNavigate();
+  const [isEditing, setIsEditing] = useState(false);
   const [file, setFile] = useState(null);
   const [previewImg, setPreviewImg] = useState({
     url: "",
     width: 0,
     height: 0,
   });
-  const [isEditing, setIsEditing] = useState(false);
-  const { currentUser } = useAuthStore();
-  const navigate = useNavigate();
-  const { textOptions, canvasOptions } = useEditorStore();
+  const { textOptions, canvasOptions, resetStore } = useEditorStore();
+  const [newBoard, setNewBoard] = useState("");
+  const [isNewBoardOpen, setIsNewBoardOpen] = useState(false);
 
   useEffect(() => {
     if (!currentUser) {
@@ -42,6 +51,14 @@ const Createpage = () => {
     }
   }, [file]);
 
+  const mutation = useMutation({
+    mutationFn: addPost,
+    onSuccess: (data) => {
+      resetStore();
+      navigate(`/pin/${data._id}`);
+    },
+  });
+
   const handleSubmit = async () => {
     if (isEditing) {
       setIsEditing(false);
@@ -50,24 +67,24 @@ const Createpage = () => {
       formData.append("media", file);
       formData.append("textOptions", JSON.stringify(textOptions));
       formData.append("canvasOptions", JSON.stringify(canvasOptions));
-
-      try {
-        const res = await apiRequest.post("/pins", formData, {
-          headers: {
-            "Content-Type": "multipart/form-data",
-          },
-        });
-        console.log(res);
-      } catch (err) {
-        console.log(err);
-      }
+      formData.append("newBoard", newBoard);
+      mutation.mutate(formData);
     }
+  };
+
+  const { data, isPending, error } = useQuery({
+    queryKey: ["formBoards"],
+    queryFn: () => apiRequest.get(`/boards`).then((res) => res.data),
+  });
+
+  const handleNewBoard = () => {
+    setIsNewBoardOpen((prev) => !prev);
   };
 
   return (
     <div className="createPage">
       <div className="createTop">
-        <h1>{isEditing ? "Design your pin" : "Create Pin"}</h1>
+        <h1>{isEditing ? "Design your Pin" : "Create Pin"}</h1>
         <Button
           variant="contained"
           color="error"
@@ -139,21 +156,41 @@ const Createpage = () => {
                 id="link"
               />
             </div>
-            <div className="createFormItem">
-              <label htmlFor="board">Board</label>
-              <select name="board" id="board">
-                <option value="">Choose a board</option>
-                <option value="">Board 1</option>
-                <option value="">Board 2</option>
-                <option value="">Board 3</option>
-              </select>
-            </div>
+            {(!isPending || !error) && (
+              <div className="createFormItem">
+                <label htmlFor="board">Board</label>
+                <select name="board" id="board">
+                  <option value="">Choose a board</option>
+                  {data?.map((board) => (
+                    <option value={board._id} key={board._id}>
+                      {board.title}
+                    </option>
+                  ))}
+                </select>
+                <div className="newBoard">
+                  {newBoard && (
+                    <div className="newBoardContainer">
+                      <div className="newBoardItem">{newBoard}</div>
+                    </div>
+                  )}
+                  <div className="createBoardButton" onClick={handleNewBoard}>
+                    Create new board
+                  </div>
+                </div>
+              </div>
+            )}
             <div className="createFormItem">
               <label htmlFor="tags">Tagged topics</label>
               <input type="text" placeholder="Add tags" name="tags" id="tags" />
               <small>Don&apos;t worry, people won&apos;t see your tags</small>
             </div>
           </form>
+          {isNewBoardOpen && (
+            <BoardForm
+              setIsNewBoardOpen={setIsNewBoardOpen}
+              setNewBoard={setNewBoard}
+            />
+          )}
         </div>
       )}
     </div>

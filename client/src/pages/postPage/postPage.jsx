@@ -31,7 +31,7 @@ const Postpage = () => {
           <ImageCmp path={data.media} alt="" w={736} />
         </div>
         <div className="postDetails">
-          <PostInteractions />
+          <PostInteractions postId={id} />
           <Link
             className="postUser"
             to={`/${data.user.userName}`}

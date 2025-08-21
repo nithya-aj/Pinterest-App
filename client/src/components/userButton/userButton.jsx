@@ -63,7 +63,7 @@ const UserButton = () => {
       >
         <MenuItem
           component={Link}
-          to={`/profile/${currentUser.userName}`}
+          to={`/${currentUser.userName}`}
           onClick={handleClose}
         >
           Profile

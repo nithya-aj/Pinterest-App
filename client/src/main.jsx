@@ -1,16 +1,22 @@
-import { StrictMode } from "react";
-import { createRoot } from "react-dom/client";
 import "./index.css";
+import React, { StrictMode } from "react";
+import { createRoot } from "react-dom/client";
 import { BrowserRouter, Route, Routes } from "react-router";
-import Homepage from "./pages/homepage/homepage.jsx";
-import Createpage from "./pages/createPage/createPage.jsx";
-import Authpage from "./pages/authPage/authPage.jsx";
-import Profilepage from "./pages/profilePage/profilePage.jsx";
-import Searchpage from "./pages/searchPage/searchPage.jsx";
 import Mainlayout from "./pages/layouts/mainLayout.jsx";
-
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import Postpage from "./pages/postPage/postPage.jsx";
+
+const Homepage = React.lazy(() => import("./pages/homepage/homepage.jsx"));
+const Createpage = React.lazy(() =>
+  import("./pages/createPage/createPage.jsx")
+);
+const Authpage = React.lazy(() => import("./pages/authPage/authPage.jsx"));
+const Profilepage = React.lazy(() =>
+  import("./pages/profilePage/profilePage.jsx")
+);
+const Searchpage = React.lazy(() =>
+  import("./pages/searchPage/searchPage.jsx")
+);
+const Postpage = React.lazy(() => import("./pages/postPage/postPage.jsx"));
 
 const queryClient = new QueryClient();
 
